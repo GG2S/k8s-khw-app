@@ -3,5 +3,5 @@ from fastapi import FastAPI
 app=FastAPI()
 
 @app.get("/")
-defroot():
-return {"message":"hello kube!"}
+def root():
+    return {"message":"hello kube!"}
