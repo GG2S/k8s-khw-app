@@ -4,4 +4,4 @@ app=FastAPI()
 
 @app.get("/")
 def root():
-    return {"message":"hello kube!"}
+    return {"message":"hello kube v2!"}
