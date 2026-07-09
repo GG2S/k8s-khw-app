@@ -45,6 +45,14 @@ jobs:
           token: ${{ secrets.MANITEST_REPO_TOKEN }}
           path: manifest
       
+      - name: Debug manifest files
+        working-directory: manifest
+        run: |
+          pwd
+          ls -al
+          find . -name values.yaml
+          git status
+      
       - name: Update image tag in values.yaml
         working-directory: manifest
         run: |
