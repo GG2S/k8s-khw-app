@@ -46,9 +46,8 @@ jobs:
           path: manifest
       
       - name: Update image tag in values.yaml
-        working-directory: helm-repo
+        working-directory: manifest
         run: |
-          cd manifest
           yq -i '.image.tag = strenv(IMAGE_TAG)' $HELM_VALUES_PATH
         
       - name: Commit and push Helm values Update
