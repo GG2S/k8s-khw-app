@@ -14,8 +14,8 @@ env:
   HELM_VALUES_PATH: hello-kube/values.yaml
 
 jobs:
-  test_build:
-    runs_on: ubuntu-latest
+  ci-pipeline:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Repository Clone
