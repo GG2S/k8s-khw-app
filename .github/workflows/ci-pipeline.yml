@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Repository Clone
+      - name: Apps Repository Clone
         uses: actions/checkout@v4
       
       - name: set image tag
@@ -37,3 +37,26 @@ jobs:
       - name: Push Docker image
         run: |
           docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Manifest Repository Clone
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.HELM_REPO }}
+          token: ${{ secrets.MANITEST_REPO_TOKEN }}
+          path: manifest
+      
+      - name: Update image tag in values.yaml
+        working-directory: helm-repo
+        run: |
+          cd manifest
+          yq -i '.image.tag = strenv(IMAGE_TAG)' $HELM_VALUES_PATH
+        
+      - name: Commit and push Helm values Update
+        run: |
+          cd helm-repo
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add $HELM_VALUES_PATH
+          git commit -m "Update image tag to $IMAGE_TAG"
+          git push
