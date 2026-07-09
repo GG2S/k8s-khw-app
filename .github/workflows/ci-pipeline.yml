@@ -1,0 +1,32 @@
+name: Build Docker Image and Update Helm Values
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: 0770asd/hello-kube
+  HELM_REPO: GG2S/k8s-khw-manifest
+  HELM_VALUES_PATH: hello-kube/values.yaml
+
+jobs:
+  test_build:
+    runs_on: ubuntu-latest
+
+    steps:
+      - name: Repository Clone
+        uses: actions/checkout@v4
+      
+      - name: set image tag
+        run: echo "IMAGE_TAG=%{GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Login to DokerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+      
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
