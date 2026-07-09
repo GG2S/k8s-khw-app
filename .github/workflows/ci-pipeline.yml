@@ -49,16 +49,9 @@ jobs:
         working-directory: manifest
         run: |
           yq -i '.image.tag = strenv(IMAGE_TAG)' $HELM_VALUES_PATH
-      
-      - name: Debug manifest files
-        working-directory: manifest
-        run: |
-          pwd
-          ls -al
-          find . -name values.yaml
-          git status
         
       - name: Commit and push Helm values Update
+        working-directory: manifest
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
